@@ -1,0 +1,44 @@
+
+Process calls:
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/LoanProcess/
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/LoanProcess/startform
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/instance/16
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/withvars/process/instance/16
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/LoanProcess/start
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/LoanProcess/start?map_pv_requesterName=Richard
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/withvars/process/LoanProcess/start?map_pv_requesterName=ERIC1&amp;map_pv_requesterLastName=YANG1
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/runtime/com.banking.app:BankingApp:1.0/process/instance/16/abort
+
+Task Calls: 
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/history/instances?page=3&pagesize=3"
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/19
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/19/content
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/19/showTaskForm
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/claim
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/release
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/start
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/stop
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/suspend
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/20/resume
+curl -X POST -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/task/21/complete?map_tv_loan_out_requesterName=testName2&map_tv_loan_out_requesterLastName=testLastName2"
+curl -X POST -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/task/execute{22}/claim
+
+curl -X GET -u eric:p@ssword123 http://192.168.56.101:8080/business-central/rest/query/runtime/process?processinstanceid=37
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/process?processinstanceid=26&processinstanceid=35"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/process?deploymentid=com.banking.app:BankingApp:1.0&processid=LoanProcess&processinstancestatus=1"
+
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?taskid=40"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?processinstanceid=36"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/task?processInstanceId=36"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/task?page=1&pagesize=3"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/task?taskId=40"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?potentialowner=developer"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?potentialowner=admin"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?taskowner=eric"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?potentialowner=developer&taskstatus=InProgress"
+
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?taskid=30"
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?deploymentid_re=*BankingApp*&taskid_min=29&taskid_max=30"
+
+curl -X GET -u eric:p@ssword123 "http://192.168.56.101:8080/business-central/rest/query/runtime/task?taskid=30&page=1&pageSize=3"
+
