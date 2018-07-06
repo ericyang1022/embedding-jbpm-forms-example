@@ -1,12 +1,12 @@
 <script type="text/javascript">
     if (!window.jBPMFormAPI) window.jBPMFormAPI = new jBPMFormsAPI();
-    var hostURL = "http://localhost:8080/kie-wb";
+    var hostURL = "http://192.168.56.101:8080/business-central";
     var tasks;
     var currentTask;
     function loadTaskList() {
         $.ajax({
                 type: "GET",
-                url: "http://localhost:8080/kie-wb/rest/task/query?potentialOwner=katy",
+                url: "http://192.168.56.101:8080/business-central/rest/task/query?potentialOwner=eric",
                 dataType: "xml",
                 beforeSend: function () {
                     $("#listcontainer").html('<img src="img/loading.gif" border="0">');
@@ -36,6 +36,8 @@
                         row += '</tr>';
                         rows = row + rows;
                     });
+                    
+                    //alert("tasks: " + tasks);
 
                     // if a task is being shown on the screen refresh buttons
                     if (currentTask) {
@@ -78,7 +80,8 @@
 
     function showTaskForm(taskId) {
         currentTask = tasks[taskId];
-
+		
+        //alert("currentTask: " + currentTask);
         var onsuccess = function() {
             $("#formcontainer").show();
             showHideActions(currentTask.status)

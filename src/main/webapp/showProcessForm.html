@@ -71,15 +71,18 @@
 <table border="0">
     <tr>
         <td>DeploymentId: </td>
-        <td><input name="deploymentId" id="deploymentId" value="org.jbpm:HR:1.0"></td>
+        <td><input name="deploymentId" style="width:80%" id="deploymentId" value="com.banking.app:BankingApp:1.0"></td>
+        <!--  <td><input name="deploymentId" id="deploymentId" value="org.jbpm:HR:1.0"></td> -->
     </tr>
     <tr>
         <td>ProcessId: </td>
-        <td><input name="processId" id="processId" value="hiring"></td>
+        <td><input name="processId" style="width:80%" id="processId" value="LoanProcess"></td>
+        <!-- <td><input name="processId" id="processId" value="hiring"></td> -->
     </tr>
     <tr>
         <td>Server URL: </td>
-        <td><input name="url" id="url" value="http://localhost:8080/kie-wb/"></td>
+        <td><input name="url" id="url" style="width:80%" value="http://192.168.56.101:8080/business-central/"></td>
+        <!-- <td><input name="url" id="url" value="http://localhost:8080/kie-wb/"></td> -->
     </tr>
     <tr>
         <td colspan="2" align="center">
@@ -88,12 +91,12 @@
     </tr>
     <tr>
         <td colspan="2" align="center">
-            <input type="button" value="show process form" onclick="showStartProcessForm('formdiv')">
+            <input type="button" value="show process form" style="width:30%" onclick="showStartProcessForm('formdiv')">
         </td>
     </tr>
 </table>
 
-<div id="formdiv" style="width: 400px; height: 400px; border: solid black 1px;">This is the div where the form will be shown!</div>
+<div id="formdiv" style="width: 700px; height: 300px; border: solid black 1px;">This is the div where the form will be shown!</div>
 <div id="processbuttons" style="display: none;">
     <input type="button" value="Start Process!" onclick="startProcess('formdiv')"/>
 </div>

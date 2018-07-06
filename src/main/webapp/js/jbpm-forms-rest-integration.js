@@ -6,10 +6,14 @@ function jBPMFormsAPI() {
     var listener = function dolisten(event){
 
         if (lastConfig) {
+        	// alert("event.origin:" + event.origin);
+        	// event.origin : http://192.168.56.101:8080
             if (!lastConfig.host.startsWith(event.origin)) return;
 
             try {
                 var response = JSON.parse(event.data)
+//                alert("post message response: " + response);
+                alert("post message response message: " + response.message);
                 if (response.status == 'success' && lastConfig.onsuccess) lastConfig.onsuccess(response.message);
                 else if (lastConfig.onerror) lastConfig.onerror(response.message);
             } catch (e) {
@@ -154,6 +158,7 @@ function jBPMFormsAPI() {
 
     this.saveTask = function(responseDiv, onsuccess, onerror) {
         var config = configs[responseDiv];
+        alert("saveTask config: " + config);
         if (config && !config.isProcess) postAction(config, 'saveTask', onsuccess, onerror);
     };
 
@@ -162,13 +167,23 @@ function jBPMFormsAPI() {
         if (config && !config.isProcess) postAction(config, 'completeTask', onsuccess, onerror);
     };
 
+    // testing: forward task
+    this.forwardTask = function(responseDiv, onsuccess, onerror) {
+        var config = configs[responseDiv];
+        if (config && !config.isProcess) postAction(config, 'forwardTask', onsuccess, onerror);
+    };
+    
     var postAction = function(config, action, onsuccess, onerror) {
         if (config && action) {
             var frame = document.getElementById(config.containerId + '_form').contentWindow;
+            //alert("frame: " + frame);
 
             var request = '{"action":"'+ action + '",';
             if (config.isProcess) request+= '"processId":"' + config.processId + '", "domainId":"' + config.deploymentId +'"}';
             else request+= '"taskId":"' + config.taskId + '"}';
+            //alert("========== before post message ============");
+            alert("formURL: " + config.formURL);
+            alert("request json: " + request);
             frame.postMessage(request, config.formURL);
             lastConfig = config;
             if (onsuccess) lastConfig.onsuccess = onsuccess;
@@ -191,6 +206,8 @@ function jBPMFormsAPI() {
             onsuccess: function (responseText) {
                 try {
                     var xmlDoc = getXMLDoc(responseText);
+                    //console.log("showTaskForm response:");
+                    //console.log(xmlDoc);
 
                     if (!xmlDoc) {
                         if (errorCallback) errorCallback(responseText);
