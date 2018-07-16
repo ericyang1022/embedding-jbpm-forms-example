@@ -13,7 +13,7 @@ function jBPMFormsAPI() {
             try {
                 var response = JSON.parse(event.data)
 //                alert("post message response: " + response);
-                alert("post message response message: " + response.message);
+                //alert("post message response message: " + response.message);
                 if (response.status == 'success' && lastConfig.onsuccess) lastConfig.onsuccess(response.message);
                 else if (lastConfig.onerror) lastConfig.onerror(response.message);
             } catch (e) {
@@ -158,7 +158,7 @@ function jBPMFormsAPI() {
 
     this.saveTask = function(responseDiv, onsuccess, onerror) {
         var config = configs[responseDiv];
-        alert("saveTask config: " + config);
+        //alert("saveTask config: " + config);
         if (config && !config.isProcess) postAction(config, 'saveTask', onsuccess, onerror);
     };
 
@@ -183,7 +183,7 @@ function jBPMFormsAPI() {
             else request+= '"taskId":"' + config.taskId + '"}';
             //alert("========== before post message ============");
             alert("formURL: " + config.formURL);
-            alert("request json: " + request);
+            // alert("request json: " + request);
             frame.postMessage(request, config.formURL);
             lastConfig = config;
             if (onsuccess) lastConfig.onsuccess = onsuccess;

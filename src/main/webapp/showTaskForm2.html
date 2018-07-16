@@ -2,6 +2,7 @@
 <head>
     <title>Test rest</title>
     <script src="js/jbpm-forms-rest-integration.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
 
         // Create a new instance to manage the interaction with the form
@@ -28,24 +29,77 @@
 
             jbpmRestAPI.showTaskForm(hostUrl, taskId, divId, onsuccess, onerror);
         }
+        
+        function getTaskLogJsonObject(actionType, divId) {
+            var prjCode = $('#formdiv_form').contents().find('.gwt-Frame').contents().find('#projectcode').val();
+            var processID = $('#formdiv_form').contents().find('iframe').contents().find('#processid').val();
+            var processInstanceID = $('#formdiv_form').contents().find('iframe').contents().find('#processinstanceid').val();
+            var taskID = document.getElementById('taskId').value;
+            //var actionType = "claimTask";
+            alert("prjcode=" + prjCode + ", processid=" + processID + ", processinstanceid=" + processInstanceID
+            	+ ", taskID=" + taskID);
+            var tasklog = {
+            	"actionType" : actionType,
+            	"prjCode" : prjCode, 
+            	"processID" : processID, 
+            	"processInstanceID" : processInstanceID, 
+            	"taskID" : taskID
+            };
+            return tasklog;
+        }
+        
+        function createTaskLog(divId, tasklog) {
+            //alert(JSON.stringify(tasklog));
+            
+            $.ajax({
+                type : "POST",
+                url : "http://192.168.56.101:8080/springmvc/tasklog/new",
+                dataType : "json",
+                //contentType:"application/json", 
+                data: tasklog,
+                success : function(data, textStatus, jqXHR) {
+                	alert("textStatus??: " + textStatus);
+                	// alert("jqXHR.status: " + jqXHR.status);
+                	// alert(JSON.stringify(data));
+                    if (textStatus == 'success' && jqXHR.status == 200) {
+                    	alert(data.result);
+                    } else {
+                    	alert("textStatus not 'success' and status code not 200");
+                        return false;
+                    }
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                	alert("Failed to create task log to another DB");
+                	alert("jqXHR.status: " + jqXHR.status + ", textStatus: " + textStatus);
+                	//alert("responseText : " + jqXHR.responseText);
+                }
+            });
+        }
 
         // This function will claim the task which form is being shown on the current div
         function claimTask(divId) {
+        	var tasklog = getTaskLogJsonObject("claimTask", divId);
+            
+        	// update task form
             var onsuccess= function(msg) {
                 alert("Task claimed");
-            }
+                createTaskLog(divId, tasklog); 
+            };
 
             var onerror = function(msg) {
                 alert("Error claiming task: " + msg);
                 jbpmRestAPI.clearContainer(divId);
-            }
-            jbpmRestAPI.claimTask(divId, onsuccess, onerror)
+            };
+            jbpmRestAPI.claimTask(divId, onsuccess, onerror);
         }
 
         // This function will start the task which form is being shown on the current div
         function startTask(divId) {
+        	var tasklog = getTaskLogJsonObject("startTask", divId);
+        	
             var onsuccess= function(msg) {
                 alert("Task Started");
+            	createTaskLog(divId, tasklog);
             }
 
             var onerror = function(msg) {
@@ -57,9 +111,13 @@
 
         // This function will release the task which form is being shown on the current div
         function releaseTask(divId) {
+        	var tasklog = getTaskLogJsonObject("releaseTask", divId);
+        	
             var onsuccess= function(msg) {
-                jbpmRestAPI.clearContainer(divId);
-                showHideTaskButtons('none');
+            	alert("Task released");
+            	//jbpmRestAPI.clearContainer(divId);
+                //showHideTaskButtons('none');
+                createTaskLog(divId, tasklog);
             }
 
             var onerror = function(msg) {
@@ -71,10 +129,13 @@
 
         // This function will submit the form and save the task state which form is being shown on the current div
         function saveTask(divId) {
+        	var tasklog = getTaskLogJsonObject("saveTask", divId);
+        	
             var onsuccess= function(msg) {
                 alert("Saved Task");
-                jbpmRestAPI.clearContainer(divId);
-                showHideTaskButtons('none');
+                //jbpmRestAPI.clearContainer(divId);
+                //showHideTaskButtons('none');
+                createTaskLog(divId, tasklog);
             }
 
             var onerror = function(msg) {
@@ -88,10 +149,13 @@
 
         // This function will submit the form and complete the task which form is being shown on the current div
         function completeTask(divId) {
+        	var tasklog = getTaskLogJsonObject("completeTask", divId);
+        	
             var onsuccess= function(msg) {
                 alert("Completed Task");
-                jbpmRestAPI.clearContainer(divId);
-                showHideTaskButtons('none');
+               // jbpmRestAPI.clearContainer(divId);
+                // showHideTaskButtons('none');
+                createTaskLog(divId, tasklog);
             }
 
             var onerror = function(msg) {
@@ -100,22 +164,6 @@
                 showHideTaskButtons('none');
             }
             jbpmRestAPI.completeTask(divId, onsuccess, onerror)
-        }
-        
-        // testing: forward task
-        function forwardTask(divId) {
-            var onsuccess= function(msg) {
-                alert("Fowarded Task");
-                jbpmRestAPI.clearContainer(divId);
-                showHideTaskButtons('none');
-            }
-
-            var onerror = function(msg) {
-                alert("Error forwarding task: " + msg);
-                jbpmRestAPI.clearContainer(divId);
-                showHideTaskButtons('none');
-            }
-            jbpmRestAPI.forwardTask(divId, onsuccess, onerror)
         }
 
         function showHideTaskButtons(action) {

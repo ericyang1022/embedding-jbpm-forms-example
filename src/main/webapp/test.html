@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery.post demo</title>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<form action="/" id="searchForm">
+  <input type="text" name="s" placeholder="Search...">
+  <textarea id="ta" name="ta" rows="10" cols="200"> 
+  </textarea>
+  <input type="submit" value="Search">
+</form>
+<!-- the result of the search will be rendered inside this div -->
+<div id="result"></div>
+ 
+<script>
+// Attach a submit handler to the form
+$( "#searchForm" ).submit(function( event ) {
+ 
+  // Stop form from submitting normally
+  event.preventDefault();
+ 
+  // Get some values from elements on the page:
+  var $form = $( this ),
+    method = $form.find( "input[name='s']" ).val(),
+    url = $form.attr( "action" );
+    alert("method:" + method + ", url: " + url);
+ 
+  // Send the data using post
+  //var posting = $.post( url, {"action":"claimTask","taskId":"29"} );
+ 
+  // Put the results in a div
+/*  posting.done(function( data ) {
+	alert("data: " + data);
+    //var response = JSON.parse(data);
+    //alert("post message response message: " + response.message);
+    console.log("data: " + data);
+    $( "#ta" ).empty().append( data );
+  }); */
+  
+    $.ajax({
+        type: 'POST',
+        url: 'http://192.168.56.101:8080/business-central/kie-wb.jsp?perspective=FormDisplayPerspective&standalone=true&opener=192.168.56.101:8080&taskId=27',
+        data: '{"action":"claimTask","taskId":"27"}', // or JSON.stringify ({name: 'jonas'}),
+        success: function(data) { alert('success data: ' + data); console.log("data: " + data);},
+        //error: function(xhr) { alert('error: ' + xhr); console.log("xhr: " + xhr);},
+		 error:function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		        console.log("xhr.status: " + xhr.status);
+		        alert(thrownError);
+		        console.log("thrownError: " + thrownError);
+		      }, 
+        contentType: "application/json",
+        dataType: 'html'
+    });
+});
+</script>
+ 
+</body>
+</html>

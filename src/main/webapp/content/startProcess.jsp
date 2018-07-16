@@ -11,9 +11,14 @@
     }; */
     
     processes["loanProcess"] = {
-        deploymentId: "com.banking.app:BankingApp:1.0",
-        processId: "LoanProcess"
+        deploymentId: "npou:npproj42:1.0",
+        processId: "npproj42.SaveTimesheet"
     };
+    
+/*    processes["loanProcess"] = {
+            deploymentId: "com.banking.app:BankingApp:1.0",
+            processId: "LoanProcess"
+        }; */
     
     processes["human-resources"] = {
         deploymentId: "org.jbpm:human-resources:1.0",
